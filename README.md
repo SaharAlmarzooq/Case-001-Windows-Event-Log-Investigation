@@ -1,18 +1,18 @@
 # 🛡️ Case #001 – Windows Event Log Investigation
 
-## Executive Summary
+## Overview
 
-This repository documents a Windows Event Log investigation performed to identify and analyze authentication-related events using Windows Event Viewer.
+This repository documents the investigation of Windows Security Event Logs to identify suspicious activity, collect evidence, and document the findings following a structured SOC investigation process.
 
-The investigation focused on reviewing Security logs, filtering relevant Event IDs, examining event properties, and documenting findings following a structured SOC investigation methodology.
+The investigation focused on reviewing Windows Security Logs, filtering relevant Event IDs, analyzing log details, and documenting the findings based on standard incident investigation practices.
 
 ---
 
 ## Scenario
 
-A Windows workstation exhibited unusual behavior.
+A Windows workstation displayed unusual behavior.
 
-The objective was to examine Windows Security Event Logs to determine whether suspicious authentication activity had occurred and document the investigation process.
+The objective was to investigate the system using Windows Event Logs and determine whether any suspicious activity had occurred.
 
 ---
 
@@ -21,6 +21,12 @@ The objective was to examine Windows Security Event Logs to determine whether su
 - Windows Operating System
 - Windows Event Viewer
 - Windows Security Logs
+
+### Evidence
+
+**Figure 1. Event Viewer Overview**
+
+![Event Viewer Overview](01-event-viewer-overview.png)
 
 ---
 
@@ -32,100 +38,90 @@ The objective was to examine Windows Security Event Logs to determine whether su
 
 ---
 
-# Investigation
+## Investigation
 
-## Step 1 — Open Event Viewer
+### Step 1 — Open Event Viewer
 
-The investigation began by launching Windows Event Viewer and navigating to the Windows Security log, which records authentication and security-related events.
-
-### Evidence
-
-![Event Viewer Overview](screenshots/01-event-viewer-overview.png)
-
----
-
-## Step 2 — Review Security Logs
-
-The Security log was examined to identify recorded authentication events and obtain an overview of available security activity before filtering specific Event IDs.
+The investigation began by opening Windows Event Viewer and navigating to the **Security** log, where authentication and security-related events are recorded.
 
 ### Evidence
 
-![Security Log](screenshots/02-security-log.png)
+**Figure 2. Windows Security Log**
+
+![Windows Security Log](02-security-log.png)
 
 ---
 
-## Step 3 — Filter Event ID 4625
+### Step 2 — Filter Relevant Event IDs
 
-The Security log was filtered using Event ID **4625**, which represents failed logon attempts.
+To narrow the investigation, the Security log was filtered using a specific Event ID.
 
-Filtering allows investigators to quickly identify unsuccessful authentication events that may indicate password guessing, unauthorized access attempts, or user authentication failures.
+Event ID **4625** was selected to search for failed logon attempts.
 
 ### Evidence
 
-![Filter Event ID 4625](screenshots/03-filter-eventid-4625.png)
+**Figure 3. Filtering Security Logs by Event ID 4625**
+
+![Filtering Security Logs](03-filter-eventid-4625.png)
 
 ---
 
-## Step 4 — Review Event ID 4624
+### Step 3 — Review Related Security Events
 
-The investigation continued by reviewing Event ID **4624**, which represents successful logon events.
+The filtered results were reviewed to identify authentication events and examine the associated log entries.
 
-Successful authentication events help investigators understand user activity, verify legitimate logins, and establish an authentication timeline during an investigation.
+During the investigation, Event ID **4624** (Successful Logon) was also examined to better understand normal authentication activity and compare relevant log events.
 
 ### Evidence
 
-![Event ID 4624](screenshots/04-eventid-4624-result.png)
+**Figure 4. Event ID 4624 Logon Event**
+
+![Event ID 4624](04-eventid-4624-result.png)
 
 ---
 
-## Step 5 — Inspect Event Properties
+### Step 4 — Analyze Event Properties
 
-The General tab of the selected event was reviewed to collect important metadata including:
+The event properties were reviewed to examine important information such as:
 
 - Event ID
 - Log Name
-- Source
 - Logged Time
-- Task Category
-- Keywords
-
-These properties provide valuable context when validating authentication activity.
-
-### Evidence
-
-![Event Properties](screenshots/05-eventid-4624-properties.png)
-
----
-
-## Step 6 — Analyze Event Details
-
-The Details tab was examined to inspect structured event information including:
-
-- Subject User SID
+- Security Identifier (SID)
 - Account Name
-- Domain Information
-- Logon ID
-- Target User Information
-
-Reviewing these details enables investigators to correlate authentication events and better understand user activity.
+- Logon Type
 
 ### Evidence
 
-![Event Details](screenshots/06-eventid-4624-details.png)
+**Figure 5. Event ID 4624 Properties**
+
+![Event Properties](05-eventid-4624-properties.png)
 
 ---
 
-# Findings
+### Step 5 — Review Event Details
 
-The investigation successfully identified Windows authentication events by reviewing Security logs and examining Event IDs related to user logon activity.
+The Details tab was inspected to review the structured event data and verify additional information related to the authentication event.
 
-The collected event information provided sufficient evidence to understand authentication behavior and demonstrated how Windows Event Logs support incident investigations.
+Sensitive information has been redacted for privacy.
 
-No indicators of malicious activity were confirmed during this investigation.
+### Evidence
+
+**Figure 6. Event ID 4624 Details**
+
+![Event Details](06-eventid-4624-details.png)
 
 ---
 
-# Risk Assessment
+## Findings
+
+The investigation successfully identified and reviewed Windows Security Events related to user authentication.
+
+Relevant Event IDs were analyzed, supporting evidence was collected, and the findings were documented following a structured SOC investigation methodology.
+
+---
+
+## Risk Assessment
 
 | Category | Assessment |
 |----------|------------|
@@ -133,46 +129,49 @@ No indicators of malicious activity were confirmed during this investigation.
 | Impact | Low |
 | Overall Risk | Low |
 
-The reviewed authentication events appeared consistent with normal Windows activity.
+No confirmed indicators of malicious activity were identified during this investigation.
 
-No evidence of unauthorized access or malicious behavior was identified during the investigation.
-
----
-
-# Analyst's Conclusion
-
-The investigation demonstrated the effectiveness of Windows Event Viewer for reviewing authentication activity and collecting forensic evidence.
-
-By filtering Security logs, reviewing authentication events, and examining detailed event properties, investigators can efficiently validate user activity and support incident response procedures.
+The analyzed events were consistent with normal Windows authentication activity and were used to demonstrate the investigation workflow.
 
 ---
 
-# Recommendations
+## Analyst's Conclusion
 
-- Monitor Windows Security logs regularly.
-- Review authentication-related Event IDs during security investigations.
-- Correlate multiple events instead of relying on a single log entry.
-- Preserve relevant logs before performing remediation activities.
+The investigation demonstrated a structured approach to Windows Event Log analysis.
+
+Relevant Security Events were reviewed, event details were examined, and the available evidence was documented.
+
+Although no malicious activity was confirmed, the investigation illustrates the standard workflow used by SOC analysts when reviewing Windows Security Logs.
+
+---
+
+## Recommendations
+
+- Regularly review Windows Security Event Logs.
+- Monitor authentication-related Event IDs.
+- Investigate repeated failed logon attempts.
+- Correlate multiple log sources during incident investigations.
 - Document investigation findings using a structured methodology.
 
 ---
 
-# Lessons Learned
+## Lessons Learned
 
-- Windows Event Logs provide valuable forensic evidence during investigations.
-- Event filtering significantly improves investigation efficiency.
-- Authentication events help establish user activity timelines.
-- Structured documentation improves investigation quality and reproducibility.
+- Windows Security Logs provide valuable evidence during investigations.
+- Filtering Event IDs improves investigation efficiency.
+- Event correlation helps analysts understand system activity.
+- Structured documentation improves incident reporting and knowledge sharing.
 
 ---
 
-# Skills Demonstrated
+## Skills Demonstrated
 
 - Windows Event Log Analysis
-- Security Log Investigation
-- Authentication Event Analysis
-- Event Correlation
-- Evidence Collection
-- Incident Documentation
 - Windows Event Viewer
-- SOC Investigation Methodology
+- Security Log Analysis
+- Event ID Investigation
+- Log Correlation
+- Evidence Collection
+- Incident Investigation
+- Risk Assessment
+- Technical Documentation
